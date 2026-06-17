@@ -119,4 +119,9 @@ Environmental Impact: The dashboard clearly proves that poor air quality and wea
 
 Overall, this project showcases a complete data pipeline that helps hospital administrators make faster, data-driven decisions to improve both patient care and hospital efficiency.
 
+🏥 Hospital Admissions & Environmental Impact Analytics Dashboard
+
+View the interactive report here in following weblink:
+https://app.powerbi.com/view?r=eyJrIjoiZjRkMzhkYWYtNWNiZC00NzE0LThlNmUtNDEyNDU4NTliZWVlIiwidCI6ImM2ZTU0OWIzLTVmNDUtNDAzMi1hYWU5LWQ0MjQ0ZGM1YjJjNCJ9
+
 

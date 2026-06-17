@@ -88,6 +88,21 @@ Key Metrics & Implementation Breakdown:
 • Logic: Generated using the chronological FORMAT function to pull weekday string names, paired with an underlying chronological sort key (WEEKDAY) running Monday through Sunday. Slicing this chart dynamically by our engineered Age Group dimension uncovers exactly which demographic groups drive clinical bottlenecks on high-traffic days.
 
 
+🌿 Track 2: Environmental & Climate Impact Analytics
+This track focuses on environmental epidemiology, investigating how ambient atmospheric changes affect public health outcomes. By correlating clinical data with granular air quality index (AQI) tiers, fine particulate matter, and regional temperature variations, we can uncover external triggers for hospital admissions.
+Key Metrics & Implementation Breakdown:
+6. Air Quality Index (AQI) Impact Analysis
+• Objective: Analyzes total admission volume across standardized air quality health brackets.
+• Logic: Applied a conditional logic mapping column to segment numeric AQI inputs into operational hazard levels (Good, Moderate, Unhealthy for Sensitive Groups, Unhealthy, Hazardous). A custom math-based sorting index (AQI Sort Order) was mapped to the raw numerical values to bypass frontend circular dependency errors and enforce logical risk progression on charts.
+7. Particulate Matter (\(PM_{2.5}\)) Vulnerabilities
+• Objective: Evaluates fine particulate matter concentrations against specific demographic cross-sections to pinpoint population vulnerabilities.
+• Logic: Constructed an advanced multi-variable Scatter Chart plotting granular, non-summarized daily admission dates. Mapping average daily \(PM_{2.5}\) micrometers against total admission counts—sliced by our engineered Age Group legend—reveals critical distribution clusters and exposure thresholds for vulnerable age groups.
+8. Weather Extreme Length of Stay Strain
+• Objective: Assesses if extreme changes in regional daily weather metrics alter patient recovery speeds and lengthen bed occupancy.
+• Logic: Deployed a dual-axis Line and Stacked Column Chart plotting daily hospital timelines. By superimposing average maximum temperature peaks (MAX_TEMP) over chronological operational metrics (ALOS), the visual exposes direct parallelisms between severe seasonal heatwaves and prolonged clinical recovery stays.
+9. Severe Pollution Mortality Correlatives
+• Objective: Examines whether hospital admission events taking place during peak air pollution windows display an increased risk profile for mortality.
+• Logic: Formulated a percentage-based Mortality Rate measure using a DIVIDE and CALCULATE algorithm tracking outcomes matching the explicit string status "Deceased". Plotting this rate over our structured environmental categories—with categorical blank-data suppression disabled—allows researchers to visually audit patient outcomes along the full pollution spectrum.
 
 
 

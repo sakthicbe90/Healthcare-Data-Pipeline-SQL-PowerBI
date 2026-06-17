@@ -87,6 +87,7 @@ Key Metrics & Implementation Breakdown:
 • Objective: Identifies consistent operational spikes across specific days of the week to intelligently guide nurse scheduling and shift staffing allocations.
 • Logic: Generated using the chronological FORMAT function to pull weekday string names, paired with an underlying chronological sort key (WEEKDAY) running Monday through Sunday. Slicing this chart dynamically by our engineered Age Group dimension uncovers exactly which demographic groups drive clinical bottlenecks on high-traffic days.
 
+![Report page 1](core_hospital_operation.png)
 
 🌿 Track 2: Environmental & Climate Impact Analytics
 This track focuses on environmental epidemiology, investigating how ambient atmospheric changes affect public health outcomes. By correlating clinical data with granular air quality index (AQI) tiers, fine particulate matter, and regional temperature variations, we can uncover external triggers for hospital admissions.
@@ -108,6 +109,8 @@ Logic: Deployed a dual-axis Line and Stacked Column Chart plotting daily hospita
 9. Severe Pollution Mortality Correlatives(Root-Cause Tree Analyzer)
 • Objective: Examines whether hospital admission events taking place during peak air pollution windows display an increased risk profile for mortality.
 Logic: Formulated a percentage-based Mortality Rate measure using a DIVIDE and CALCULATE algorithm tracking outcomes matching the explicit string status "Deceased". Instead of a standard line graph, this metric is deployed inside an interactive AI Decomposition Tree visual. This allows stakeholders to dynamically drill down and slice open patient admissions by AQI Category, Age Group, and Gender on the fly, instantly surfacing deep root-cause trends.
+
+![Report page 2](Environmental_climate_impact.png)
 
 Conclusion:
 

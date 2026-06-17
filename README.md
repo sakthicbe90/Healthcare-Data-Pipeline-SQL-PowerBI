@@ -56,6 +56,39 @@ The Mortality file had some hidden duplicates and empty spaces from the download
 • Step D (Set Master Key): Finally, we set MRD as the official Primary Key for this table.
 
 
+📊 Phase 4: Building the Staging Reporting Layer (SQL View)
+Once the data constraints were fully locked into the base database tables, a specialized virtual staging layer (v_HospitalAdmission) was created to prepare the data for Power BI import.
+Simple Step-by-Step Breakdown of the View Code:
+1. Targeting the Environment (USE AutoCareDB): Tells SQL Server to execute the query within your specific database instance.
+2. Dynamic Creation (CREATE OR ALTER VIEW): Builds the view container safely. If the view already exists, it updates it dynamically without breaking existing connections. 
+3. The Logical Calculation Layer (WITH CleanData AS): Instead of permanently deleting historical logs from the physical database, a Common Table Expression (CTE) acts as a safe, temporary workbench.
+Isolating Business Duplicates (ROW_NUMBER() OVER...): The script scans the table and groups rows by the Patient ID (MRD_No), Admission Date (D_O_A), and Discharge Date (D_O_D). If a patient has multiple rows with identical timestamps, it assigns them a sequential index number
+
+📥 Phase 5:Data Ingestion: Connecting SQL Server to Power BI
+To streamline our data architecture, we bypassed managing complex relationships (Star Schema transformations) inside Power BI. Instead, we consolidated our staging architecture into a single, flattened database view (v_HospitalAdmission) directly inside SQL Server. This provides a highly performant, single-table reporting layer for frontend analytics.
+Now that our data model is completely flat inside Power BI, all environmental, demographic, operational, and mortality variables are available as attributes on a single row. This enables high-performance calculations without the need for complex relationship cross-filtering.
+
+📊 Track 1: Core Hospital Operations
+This analytical track focuses entirely on hospital capacity planning, asset utilization, and medical resource optimization. By transforming our flattened database view into operational key performance indicators (KPIs) and demographic segmentations, hospital administrators can gain immediate insight into facility throughput and staff workloads.
+Key Metrics & Implementation Breakdown:
+1. Total Volume of Discharges
+• Objective: Isolates the exact number of patients who successfully completed their clinical treatment and left the facility.
+• Logic: Calculated using a DAX CALCULATE function that counts total rows where the Outcome status matches the explicit string "Discharge". This removes incomplete stays or cases where patients left against medical advice.
+2. Average Daily Discharge Rate
+• Objective: Measures the day-to-day patient turnover speed to evaluate administrative and logistical velocity.
+• Logic: Implemented via an AVERAGEX iterator. The metric aggregates total discharges against a unique list of active chronological calendar dates, generating a precise baseline for normal daily patient outflows.
+3. Average Length of Stay (ALOS)
+• Objective: Monitors the average number of days a hospital bed is occupied per patient visit, a vital baseline metric for capacity management.
+• Logic: Built by first utilizing a DATEDIFF calculation between a patient's Admission_Date and Discharge_Date to establish individual lengths of stay (LOS_Days). A standard DAX AVERAGE function is then run against this column.
+4. Patient Demographic Footprint
+• Objective: Segments patient volume to reveal resource consumption patterns and clinical resource mapping.
+• Logic: Created a logical SWITCH(TRUE()) conditional column to slice numerical patient ages into structured clinical cohorts: Children (<18), Adults (18–64), and Seniors (>=65).
+5. Weekly Peak Traffic waves
+• Objective: Identifies consistent operational spikes across specific days of the week to intelligently guide nurse scheduling and shift staffing allocations.
+• Logic: Generated using the chronological FORMAT function to pull weekday string names, paired with an underlying chronological sort key (WEEKDAY) running Monday through Sunday. Slicing this chart dynamically by our engineered Age Group dimension uncovers exactly which demographic groups drive clinical bottlenecks on high-traffic days.
+
+
+
 
 
 

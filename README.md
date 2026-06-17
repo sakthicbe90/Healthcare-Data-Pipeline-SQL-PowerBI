@@ -12,7 +12,7 @@ Key Business Questions Addressed:
 5. Weather & Strain: How do extreme changes in daily environmental variables—such as maximum temperature peaks or humidity fluctuations—impact a patient's average Length of Stay (ALOS)?
 Severe Pollution Outcomes: Is there a measurable relationship between periods of severe air pollution index (AQI) scores and critical clinical metrics like post-admission mortality outcomes?
 
-🛠️ Phase 1: Data Extraction & Database Ingestion (EL)
+Phase 1: Data Extraction & Database Ingestion (EL)
 1. Data Sourcing
 The raw data is extracted from the Kaggle dataset repository and consists of three separate entity tracking tables in flat CSV format:
 • HDHI Admission data.csv (Core patient transactional log)
@@ -38,9 +38,25 @@ This table acts as the transactional core of the entire database, logging every 
 2. Environmental Dimension Table: stg_Pollution
 This table acts as a chronological timeline lookup containing master records of localized daily atmospheric pollution metrics and weather status updates.
 • Primary Key (PK): DATE. This column stores completely unique calendar dates with zero duplicates, serving as the master anchor for cross-examining admission volumes against daily Air Quality Index (AQI) ratings, PM2.5 averages, temperature peaks, and humidity levels.
-3. Clinical Dimension Table: stg_Mortality
-This specialized table tracks confirmed patient death outcomes across the hospital network.
-• Primary/Foreign Key (PK, FK): MRD. Because an individual patient can logically only experience a final mortality outcome once, the MRD serves as a completely unique identifier here. It maps directly back to the matching MRD field in the core stg_Admissions table, establishing a clean One-to-One (1:1) relationship extension.
+3.Clinical Dimension Table: stg_MortalityThis specialized table tracks confirmed patient death outcomes linked directly to specific hospital stays.Primary Key / Foreign Key (PK, FK): SNO (Serial Number). Because a specific hospital admission event can logically only result in a final mortality outcome once, the SNO column serves as a completely unique identifier in this table. It maps directly back to the matching SNO field in the central stg_Admissions fact table, establishing a clean One-to-One (1:1) relationship extension. This allows analysts to pin down the exact environmental and operational factors present during that specific terminal admission.
+
+Phase 3: Initial Cleaning & Enforcing Referential Integrity
+Before SQL Server allows you to establish relational links (Primary and Foreign Keys), the tables must be aggressively cleaned. If duplicate keys, orphaned records, or null values exist in key columns, the database engine will throw an execution error.
+1. Cleaning and Setting Up the Pollution Table
+• Step A (ALTER COLUMN ... NOT NULL): We tell the database that the DATE column can never be left empty. Every single row must have a valid date.
+• Step B (ADD CONSTRAINT ... PRIMARY KEY): We turn the DATE column into the master key for this table. This guarantees that no two days can look exactly the same in our weather and air logs.
+2. Cleaning and Setting Up the Admissions Table
+• Step A (ALTER COLUMN ... NOT NULL): We make sure that the SNO (Serial Number) column can never have empty rows.
+• Step B (ADD CONSTRAINT ... PRIMARY KEY): We turn SNO into the master key for this table. This ensures every single hospital visit has its own unique receipt or tracking number.
+3. Deep Cleaning and Setting Up the Mortality Table
+The Mortality file had some hidden duplicates and empty spaces from the download, so we cleaned it up using a 4-step checklist:
+• Step A (Delete Blanks): We run a quick cleanup query to find and delete any completely empty rows at the bottom of the table.
+• Step B (Remove Duplicates): Since a person can logically only die once, we cannot have the same patient ID (MRD) showing up multiple times. We use a smart counting trick called a CTE to scan the list, find repeated patient IDs, and delete the extra copies so only one clean record remains.
+• Step C (Lock Column): Now that the column is perfectly clean, we lock it down so it can never accept empty entries in the future.
+• Step D (Set Master Key): Finally, we set MRD as the official Primary Key for this table.
+
+
+
 
 
 

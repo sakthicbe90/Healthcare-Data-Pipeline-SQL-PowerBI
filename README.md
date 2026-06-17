@@ -105,7 +105,18 @@ Logic: Constructed an advanced multi-variable Scatter Chart plotting granular, n
 • Objective: Assesses if extreme changes in regional daily weather metrics alter patient recovery speeds and lengthen bed occupancy.
 Logic: Deployed a dual-axis Line and Stacked Column Chart plotting daily hospital timelines. By superimposing average maximum temperature peaks (MAX_TEMP) over chronological operational metrics (ALOS), the visual exposes direct parallelisms between severe seasonal heatwaves and prolonged clinical recovery stays.
 
-9. Severe Pollution Mortality Correlatives
+9. Severe Pollution Mortality Correlatives(Root-Cause Tree Analyzer)
 • Objective: Examines whether hospital admission events taking place during peak air pollution windows display an increased risk profile for mortality.
-Logic: Formulated a percentage-based Mortality Rate measure using a DIVIDE and CALCULATE algorithm tracking outcomes matching the explicit string status "Deceased". Plotting this rate over our structured environmental categories—with categorical blank-data suppression disabled—allows researchers to visually audit patient outcomes along the full pollution spectrum.
+Logic: Formulated a percentage-based Mortality Rate measure using a DIVIDE and CALCULATE algorithm tracking outcomes matching the explicit string status "Deceased". Instead of a standard line graph, this metric is deployed inside an interactive AI Decomposition Tree visual. This allows stakeholders to dynamically drill down and slice open patient admissions by AQI Category, Age Group, and Gender on the fly, instantly surfacing deep root-cause trends.
+
+Conclusion:
+
+This project successfully connects a SQL Server database to Power BI to turn raw hospital data into clean, interactive dashboards. By doing the heavy data cleaning in SQL and building the reporting logic in Power BI, the project delivers valuable insights across both analytical tracks:
+
+Hospital Operations: With an Average Length of Stay (ALOS) of 7.87 days and clear visuals showing weekly traffic peaks, hospital managers can better plan bed capacity and optimize nurse staffing schedules based on busy days.
+
+Environmental Impact: The dashboard clearly proves that poor air quality and weather extremes affect patient health. Using the interactive Decomposition Tree, users can see that while the overall hospital mortality rate is 2.50%, it drops or spikes significantly depending on the air quality (AQI) tier, age group, and gender of the patient.
+
+Overall, this project showcases a complete data pipeline that helps hospital administrators make faster, data-driven decisions to improve both patient care and hospital efficiency.
+
 
